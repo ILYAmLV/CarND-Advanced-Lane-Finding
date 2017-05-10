@@ -17,18 +17,6 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-[//]: # (Image References)
-
-[image1]: ./output_images/undist_cal_image.jpg
-[image2]: ./output_images/HLS.jpg 
-[image3]: ./output_images/LUV.jpg 
-[image4]: ./output_images/LAB.jpg 
-[image5]: ./output_images/thresh_image.jpg 
-[image6]: ./output_images/combined_image.jpg 
-[image7]: ./output_images/CLAHE.jpg 
-[image8]: ./output_images/warped.jpg 
-[image9]: ./output_images/curve.jpg 
-[image10]: ./output_images/result.jpg
 
 ### My project includes the following files:
 * **P4.ipynb** containing the script to run the model.
@@ -47,15 +35,11 @@ I have implemented a camera calibration class created by a fellow udacity studen
 
 Then using the output `objpoints` and `imgpoints` the class computes the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  These variables are then stored inside the class until  distortion correction to the test image using the **`calibration.undistort`**:
 
-![alt text][image1]
 
 ### Pipeline (Thresholding)
 ---
 
 To come up with an optimal thrsesholding combination for detecting yellow and white traffic lanes I have explored many different color spaces (contained in the `color_explr.ipynb` file), mainly the **HLS, LUV and LAB** color spaces:
-![alt text][image2]
-![alt text][image3]
-![alt text][image4]
 
 I took the **`Saturation Channel`** from the **HLS** color space and thresholded it to pick up pixels only in the **170** - **255** range.
 
@@ -65,15 +49,12 @@ I took the **`A-Channel`** from the **LAB** color space and thresholded it to pi
 
 I came up with the thresholding ranges for these color spaces by separating the outputs and manually changing the values to see which ranges worked best.
 
-![alt text][image5]
 
 I then combined the thresholded image with **`Sobel`** output to get the final image:
 
-![alt text][image6]
 
 I have also tried using  **`contrast limited adaptive histogram equalization (CLAHE)`**, it is great for improving the contrast of the image especially in the low light environments but without an algorithm for recognizing image condition constant **`CLAHE`** filtering was adding too much noise.
 
-![alt text][image7]
 
 ### Pipeline (Persective Transform)
 ---
@@ -118,7 +99,6 @@ This resulted in the following source and destination points:
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image8]
 
 ### Pipeline (Lane Fitting)
 ---
@@ -140,7 +120,6 @@ result = cv2.addWeighted(img, 1, newwarp, 0.3, 0)
 ```
 To calculate calculated the radius of curvature of the lane and the position of the vehicle with respect to the center I used the formula:
 
-![alt text][image9]
 Represented by folowing code:
 ```
 ym_per_pix = 30/720.0 # meters per pixel in y dimension
@@ -166,7 +145,6 @@ xm_per_pix = 3.7/700.0 # meters per pixel in x dimension
 
 Here is an example of my result on a test image:
 
-![alt text][image10]
 
 ### Pipeline (Video)
 ---
